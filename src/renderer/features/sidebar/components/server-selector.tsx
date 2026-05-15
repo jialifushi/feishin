@@ -20,6 +20,8 @@ import { Text } from '/@/shared/components/text/text';
 import { ServerType } from '/@/shared/types/domain-types';
 import { ServerFeature } from '/@/shared/types/features-types';
 
+import authIcon from '/@/renderer/assets/auth/brand-logo.png';
+
 export const ServerSelector = () => {
     const { t } = useTranslation();
     const currentServer = useCurrentServer();
@@ -54,20 +56,13 @@ export const ServerSelector = () => {
         return selectedMusicFolders[0].name;
     })();
 
-    const logo =
-        currentServer.type === ServerType.NAVIDROME
-            ? NavidromeLogo
-            : currentServer.type === ServerType.JELLYFIN
-              ? JellyfinLogo
-              : OpenSubsonicLogo;
-
     return (
         <DropdownMenu offset={0} position="right-start" withinPortal={false}>
             <DropdownMenu.Target>
                 <div className={styles.popoverTarget}>
                     <Box className={styles.buttonContainer}>
                         <Group className={styles.buttonGroup} gap="sm">
-                            <img className={styles.logo} src={logo} />
+                            <img className={styles.logo} src={authIcon} style={{ borderRadius: 'var(--mantine-radius-xs)' }} />
                             <Stack className={styles.buttonStack} gap={2}>
                                 <Text fw={600} size="sm" truncate>
                                     {currentServer.name}

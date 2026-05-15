@@ -6,6 +6,23 @@ These variables override app settings **on first run** when no persisted setting
 
 ---
 
+## Multi-Server Failover (v0.2.0+)
+
+| Setting | Default | Env variable | Description |
+|-------------|---------|--------------|--------------------------------|
+| `multi_server` | `false` | `MULTI_SERVER` | Set to `true` to enable sequential server login attempts. |
+| `allow_code` | *(empty)* | `ALLOW_CODE` | Access PIN code. Required for entering the loading terminal. |
+
+### Server Nodes (1-5)
+Each node requires a full set of credentials. Replace `[n]` with 1-5:
+*   `SERVER_URL[n]`: The full URL of the backend (e.g. `https://jellyfin.com`).
+*   `SERVER_TYPE[n]`: `jellyfin` or `subsonic`.
+*   `USERNAME[n]`: Login username.
+*   `PASSWORD[n]`: Login password.
+*   `WEB_TITLE[n]`: Brand title for this specific node.
+
+---
+
 ## General
 
 | Setting | Default | Env variable | Available values / Description |

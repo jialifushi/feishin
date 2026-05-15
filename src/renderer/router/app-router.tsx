@@ -8,8 +8,10 @@ import { ResponsiveLayout } from '/@/renderer/layouts/responsive-layout';
 import { AppOutlet } from '/@/renderer/router/app-outlet';
 import { AppRoute } from '/@/renderer/router/routes';
 import { TitlebarOutlet } from '/@/renderer/router/titlebar-outlet';
+import { Center } from '@mantine/core';
 import { BaseContextModal, ModalsProvider } from '/@/shared/components/modal/modal';
 import { Spinner } from '/@/shared/components/spinner/spinner';
+import { SettingsContextModal } from '/@/renderer/features/settings/components/settings-modal';
 
 const NowPlayingRoute = lazy(
     () => import('/@/renderer/features/now-playing/routes/now-playing-route'),
@@ -151,18 +153,6 @@ const UpdatePlaylistContextModal = (props: any) => (
     </Suspense>
 );
 
-const LazySettingsContextModal = lazy(() =>
-    import('/@/renderer/features/settings/components/settings-modal').then((module) => ({
-        default: module.SettingsContextModal,
-    })),
-);
-
-const SettingsContextModal = (props: any) => (
-    <Suspense fallback={<Spinner container />}>
-        <LazySettingsContextModal {...props} />
-    </Suspense>
-);
-
 const LazyShareItemContextModal = lazy(() =>
     import('/@/renderer/features/sharing/components/share-item-context-modal').then((module) => ({
         default: module.ShareItemContextModal,
@@ -206,9 +196,10 @@ export const AppRouter = () => {
         <HashRouter unstable_useTransitions={false}>
             <ModalsProvider modals={appRouterModals}>
                 <RouterErrorBoundary>
-                    <Routes>
-                        {/* Top-level dispatcher, runs before any other layout/outlet */}
-                        <Route element={<AutoLoginDispatcher />} index />
+                    <Suspense fallback={<Center h="100vh" style={{ background: 'var(--mantine-color-body)' }}><Spinner /></Center>}>
+                        <Routes>
+                            {/* Top-level dispatcher, runs before any other layout/outlet */}
+                            <Route element={<AutoLoginDispatcher />} path="/" />
 
                         <Route element={<AuthenticationOutlet />}>
                             <Route element={<TitlebarOutlet />}>
@@ -346,6 +337,7 @@ export const AppRouter = () => {
                         </Route>
                         <Route element={<InvalidRoute />} path="*" />
                     </Routes>
+                </Suspense>
                 </RouterErrorBoundary>
             </ModalsProvider>
         </HashRouter>

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { Center, PasswordInput, Stack, Text, Title } from '@mantine/core';
+import { Center, PasswordInput, Stack, Text, Title, Paper, Image } from '@mantine/core';
 import { toast } from '/@/shared/components/toast/toast';
 import { useAuthStoreActions } from '/@/renderer/store';
-import { FaKey } from 'react-icons/fa';
+import authIcon from '/@/renderer/assets/auth/brand-logo.png';
 
-export const AuthCodePage = () => {
+const AuthCodePage = () => {
     const [code, setCode] = useState('');
     const [error, setError] = useState(false);
     const navigate = useNavigate();
@@ -17,9 +17,8 @@ export const AuthCodePage = () => {
             // @ts-ignore
             const allowCode = window.ALLOW_CODE;
             if (code === allowCode) {
-                setAuthenticated(true);
-                toast.success({ message: 'Authentication successful!' });
-                navigate('/home'); // Corrected navigation
+                sessionStorage.setItem('pin_verified', 'true');
+                navigate('/'); 
             } else {
                 setError(true);
                 toast.error({ message: 'Invalid authentication code.' });
@@ -28,27 +27,32 @@ export const AuthCodePage = () => {
     };
 
     return (
-        <Center h="100vh">
-            <Stack align="center" maw={400}>
-                <FaKey color="gray" size={64} />
-                <Title order={1}>Authentication Required</Title>
-                <Text c="dimmed" size="lg" ta="center">
-                    Please enter the authentication code to continue.
-                </Text>
-                <PasswordInput
-                    autoFocus
-                    error={error}
-                    label="Authentication Code"
-                    onChange={(event) => {
-                        setCode(event.currentTarget.value);
-                        setError(false);
-                    }}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Enter code and press Enter"
-                    value={code}
-                    w="100%"
-                />
-            </Stack>
+        <Center h="100vh" style={{ background: 'var(--mantine-color-body)', color: 'var(--mantine-color-text)' }}>
+            <Paper p="xl" radius="md" withBorder shadow="md" style={{ maxWidth: 400, width: '90%' }}>
+                <Stack align="center" gap="lg">
+                    <Image src={authIcon} w={120} h={120} radius="md" fallbackSrc="https://placehold.co/120x120?text=Music" />
+                    <Title order={2} ta="center">Authentication Required</Title>
+                    <Text c="dimmed" size="sm" ta="center">
+                        Please enter the authentication code to continue.
+                    </Text>
+                    <PasswordInput
+                        autoFocus
+                        error={error}
+                        label="Authentication Code"
+                        onChange={(event) => {
+                            setCode(event.currentTarget.value);
+                            setError(false);
+                        }}
+                        onKeyDown={handleKeyDown}
+                        placeholder="Enter code and press Enter"
+                        value={code}
+                        w="100%"
+                        size="md"
+                    />
+                </Stack>
+            </Paper>
         </Center>
     );
 };
+
+export default AuthCodePage;

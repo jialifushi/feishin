@@ -479,7 +479,8 @@ export const ssApiClient = (args: {
                 };
                 request.data = body;
                 request.params = {
-                    c: 'Feishin',
+                    // @ts-ignore
+                    c: window.WEB_TITLE || 'HMusic',
                     f: 'json',
                     v: '1.13.0',
                     ...authParams,
@@ -491,7 +492,8 @@ export const ssApiClient = (args: {
                 headers['Content-Type'] = 'application/x-www-form-urlencoded';
                 request.method = 'POST';
                 const data = {
-                    c: 'Feishin',
+                    // @ts-ignore
+                    c: window.WEB_TITLE || 'HMusic',
                     f: 'json',
                     v: '1.13.0',
                     ...authParams,
@@ -500,7 +502,8 @@ export const ssApiClient = (args: {
                 request.data = qs.stringify(data, { arrayFormat: 'repeat' });
             } else {
                 const data = {
-                    c: 'Feishin',
+                    // @ts-ignore
+                    c: window.WEB_TITLE || 'HMusic',
                     f: 'json',
                     v: '1.13.0',
                     ...authParams,

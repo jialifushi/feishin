@@ -10,9 +10,6 @@ import {
     isLegacyAuth,
     isServerLock,
 } from '/@/renderer/features/action-required/utils/window-properties';
-import JellyfinIcon from '/@/renderer/features/servers/assets/jellyfin.png';
-import NavidromeIcon from '/@/renderer/features/servers/assets/navidrome.png';
-import SubsonicIcon from '/@/renderer/features/servers/assets/opensubsonic.png';
 import { IgnoreCorsSslSwitches } from '/@/renderer/features/servers/components/ignore-cors-ssl-switches';
 import { AnimatedPage } from '/@/renderer/features/shared/components/animated-page';
 import { PageErrorBoundary } from '/@/renderer/features/shared/components/page-error-boundary';
@@ -36,14 +33,9 @@ import { toast } from '/@/shared/components/toast/toast';
 import { useForm } from '/@/shared/hooks/use-form';
 import { AuthenticationResponse, ServerListItemWithCredential } from '/@/shared/types/domain-types';
 import { ServerType, toServerType } from '/@/shared/types/types';
+import authIcon from '/@/renderer/assets/auth/brand-logo.png';
 
 const localSettings = isElectron() ? window.api.localSettings : null;
-
-const SERVER_ICONS: Record<ServerType, string> = {
-    [ServerType.JELLYFIN]: JellyfinIcon,
-    [ServerType.NAVIDROME]: NavidromeIcon,
-    [ServerType.SUBSONIC]: SubsonicIcon,
-};
 
 const SERVER_NAMES: Record<ServerType, string> = {
     [ServerType.JELLYFIN]: 'Jellyfin',
@@ -57,7 +49,7 @@ const LoginRoute = () => {
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
     const { addServer, setCurrentServer, updateServer } = useAuthStoreActions();
-    const currentServer = useCurrentServer();
+    const currentServer = useAuthStore((s) => s.currentServer);
     const serverList = useServerList();
 
     // Check if server lock is configured
@@ -113,7 +105,7 @@ const LoginRoute = () => {
         return (
             <AnimatedPage>
                 <PageHeader />
-                <Center style={{ height: '100%', width: '100vw' }}>
+                <Center style={{ height: '100%', width: '100vw', background: 'var(--mantine-color-body)' }}>
                     <Stack>
                         <TextTitle fw={600}>{t('error.genericError')}</TextTitle>
                         <Text fw={500}>{t('error.serverNotSelectedError')}</Text>
@@ -213,22 +205,22 @@ const LoginRoute = () => {
     });
 
     const isSubmitDisabled = !form.values.username || !form.values.password;
-    const serverIcon = SERVER_ICONS[serverType as ServerType];
     const serverDisplayName = SERVER_NAMES[serverType as ServerType];
 
     return (
         <AnimatedPage>
             <PageHeader />
-            <Center style={{ height: '100%', width: '100vw' }}>
-                <Paper p="xl" style={{ maxWidth: '400px', width: '100%' }}>
+            <Center style={{ height: '100%', width: '100vw', background: 'var(--mantine-color-body)' }}>
+                <Paper p="xl" shadow="md" withBorder style={{ maxWidth: '400px', width: '100%' }}>
                     <form onSubmit={handleSubmit}>
                         <Stack gap="xl">
                             <Stack align="center" gap="md">
                                 <img
-                                    alt={serverDisplayName}
-                                    height="80"
-                                    src={serverIcon}
-                                    width="80"
+                                    alt="Auth Icon"
+                                    height="120"
+                                    src={authIcon}
+                                    style={{ borderRadius: 'var(--mantine-radius-md)' }}
+                                    width="120"
                                 />
                                 <Text fw={600} size="xl">
                                     {serverName}

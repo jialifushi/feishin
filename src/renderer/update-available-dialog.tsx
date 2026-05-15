@@ -58,19 +58,8 @@ export const UpdateAvailableDialog = () => {
                     {t('common.newVersionAvailable')} - {version}
                 </Text>
                 <Group justify="flex-end">
-                    <Button onClick={handleDismiss} size="xs" variant="default">
+                    <Button onClick={handleDismiss} size="xs" variant="filled">
                         {t('common.dismiss')}
-                    </Button>
-                    <Button
-                        component="a"
-                        href="https://github.com/jeffvli/feishin/releases/latest"
-                        onClick={handleDismiss}
-                        rightSection={<Icon icon="externalLink" size="sm" />}
-                        size="xs"
-                        target="_blank"
-                        variant="filled"
-                    >
-                        {t('action.viewMore')}
                     </Button>
                 </Group>
             </Stack>

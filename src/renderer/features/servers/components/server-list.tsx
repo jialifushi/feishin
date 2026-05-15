@@ -20,6 +20,8 @@ import { Stack } from '/@/shared/components/stack/stack';
 import { Text } from '/@/shared/components/text/text';
 import { ServerType } from '/@/shared/types/domain-types';
 
+import authIcon from '/@/renderer/assets/auth/brand-logo.png';
+
 export const ServerList = () => {
     const { t } = useTranslation();
     const currentServer = useCurrentServer();
@@ -49,16 +51,11 @@ export const ServerList = () => {
                                 <Accordion.Control>
                                     <Group>
                                         <img
-                                            src={
-                                                server.type === ServerType.NAVIDROME
-                                                    ? NavidromeLogo
-                                                    : server.type === ServerType.JELLYFIN
-                                                      ? JellyfinLogo
-                                                      : OpenSubsonicLogo
-                                            }
+                                            src={authIcon}
                                             style={{
                                                 height: 'var(--theme-font-size-lg)',
                                                 width: 'var(--theme-font-size-lg)',
+                                                borderRadius: 'var(--mantine-radius-xs)'
                                             }}
                                         />
                                         <Text fw={server.id === currentServer?.id ? 600 : 400}>

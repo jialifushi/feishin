@@ -398,7 +398,9 @@ const parsePath = (fullPath: string) => {
 };
 
 export const createAuthHeader = (): string => {
-    return `MediaBrowser Client="Feishin", Device="${getClientType()}", DeviceId="${
+    // @ts-ignore
+    const brand = window.WEB_TITLE || 'HMusic';
+    return `MediaBrowser Client="${brand}", Device="${getClientType()}", DeviceId="${
         useAuthStore.getState().deviceId
     }", Version="${packageJson.version}"`;
 };

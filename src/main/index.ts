@@ -472,7 +472,7 @@ const createTray = () => {
         });
     }
 
-    tray.setToolTip('Feishin');
+    tray.setToolTip('HMusic');
     tray.setContextMenu(contextMenu);
 };
 

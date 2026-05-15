@@ -9,14 +9,16 @@ import { useAuthStore, useAuthStoreActions } from '/@/renderer/store';
 const normalizeUrl = (url: string) => url.replace(/\/$/, '');
 
 export const AppOutlet = () => {
-    const currentServer = useAuthStore(
-        (state) =>
-            state.currentServer
+    const { currentServer, isAuthenticated } = useAuthStore(
+        (state) => ({
+            currentServer: state.currentServer
                 ? {
                       id: state.currentServer.id,
                       url: state.currentServer.url,
                   }
                 : null,
+            isAuthenticated: state.isAuthenticated,
+        }),
         shallow,
     );
     const { deleteServer, setCurrentServer } = useAuthStoreActions();
@@ -39,10 +41,11 @@ export const AppOutlet = () => {
         }
     }, [currentServer, deleteServer, hasServerLockMismatch, setCurrentServer]);
 
-    const isActionsRequired = !currentServer || hasServerLockMismatch;
+    const isActionsRequired = !currentServer || hasServerLockMismatch || !isAuthenticated;
 
     if (isActionsRequired) {
-        return <Navigate replace to={AppRoute.ACTION_REQUIRED} />;
+        // Redirect to / so the AutoLoginDispatcher can handle the routing to login, maintenance, or auth-code
+        return <Navigate replace to="/" />;
     }
 
     return <Outlet />;

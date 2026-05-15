@@ -138,23 +138,24 @@ export const AppMenu = () => {
         });
     };
 
-    const serverHeaderMenuItems: MenuItem[] = currentServer
-        ? [
-              {
-                  component: (
-                      <div className={styles.serverSelector}>
-                          <ServerSelector />
-                      </div>
-                  ),
-                  id: 'server-selector',
-                  type: 'custom',
-              },
-              {
-                  id: 'divider-server',
-                  type: 'divider',
-              },
-          ]
-        : [];
+    const serverHeaderMenuItems: MenuItem[] =
+        currentServer && !isServerLock()
+            ? [
+                  {
+                      component: (
+                          <div className={styles.serverSelector}>
+                              <ServerSelector />
+                          </div>
+                      ),
+                      id: 'server-selector',
+                      type: 'custom',
+                  },
+                  {
+                      id: 'divider-server',
+                      type: 'divider',
+                  },
+              ]
+            : [];
 
     const menuConfig: MenuItem[] = [
         ...serverHeaderMenuItems,
@@ -266,16 +267,6 @@ export const AppMenu = () => {
         {
             id: 'divider-4',
             type: 'divider',
-        },
-        {
-            icon: 'brandGitHub',
-            id: 'version',
-            label: t('page.appMenu.version', { version: packageJson.version }),
-            onClick: () =>
-                openReleaseNotesModal(
-                    t('common.newVersion', { version: packageJson.version }) as string,
-                ),
-            type: 'item',
         },
         {
             condition: isElectron(),

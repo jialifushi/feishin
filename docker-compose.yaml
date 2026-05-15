@@ -2,18 +2,27 @@ version: '3.5'
 services:
     feishin:
         container_name: feishin-auth-test
-        image: feishin-auth:v0.1.0
+        image: feishin-auth:v0.2.0
         restart: unless-stopped
         ports:
             - 9180:9180
         environment:
-            - SERVER_NAME=jellyfin # pre defined server name
-            - SERVER_LOCK=false # When true AND name/type/url are set, only username/password can be toggled
-            - SERVER_TYPE=navidrome # navidrome also works
-            - SERVER_URL=https://music.28.al # http://address:port
-            - WEB_TITLE=Myn
-            - USERNAME=hertz # pre defined username
-            - PASSWORD=VlM1lkUO # pre defined password
+            - MULTI_SERVER=true
+            - SERVER_LOCK=true # When true AND name/type/url are set, only username/password can be toggled
+            # 服务器1
+            - WEB_TITLE1=HMusic-Main # pre defined server name
+            - SERVER_TYPE1=navidrome # navidrome also works
+            - SERVER_URL1=http://192.168.19.29:4533/ # http://address:port
+            - WEB_TITLE1=HMusic
+            - USERNAME1=Hertz # pre defined username
+            - PASSWORD1=5201314hez # pre defined password
+            # 服务器2
+            - WEB_TITLE2=HMusic-Backup
+            - SERVER_TYPE2=navidrome
+            - SERVER_URL2=http://121.4.81.141:1260/
+            - WEB_TITLE2=HMusic
+            - USERNAME2=Hertz
+            - PASSWORD2=5201314hez
             - ALLOW_CODE=123 # used for some authentications
             - LEGACY_AUTHENTICATION=false # When SERVER_LOCK is true, sets the legacyauth flag for server authentication (true or false)
             - ANALYTICS_DISABLED=false # Set to true to disable Umami analytics tracking

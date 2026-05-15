@@ -5,27 +5,26 @@ import { AnalyticsSettings } from '/@/renderer/features/settings/components/adva
 import { ExportImportSettings } from '/@/renderer/features/settings/components/advanced/export-import-settings';
 import { LoggerSettings } from '/@/renderer/features/settings/components/advanced/logger-settings';
 import { CacheSettings } from '/@/renderer/features/settings/components/window/cache-settngs';
-import { UpdateSettings } from '/@/renderer/features/settings/components/window/update-settings';
+import { isServerLock } from '/@/renderer/features/action-required/utils/window-properties';
 import { Divider } from '/@/shared/components/divider/divider';
 import { Stack } from '/@/shared/components/stack/stack';
 
-const sections = [
-    { component: UpdateSettings, key: 'update' },
-    { component: AnalyticsSettings, key: 'analytics' },
-    { component: ExportImportSettings, key: 'export-import' },
-    { component: LoggerSettings, key: 'logger' },
-    { component: CacheSettings, key: 'cache' },
-];
-
 export const AdvancedTab = memo(() => {
+    const isLocked = isServerLock();
+    
     return (
         <Stack gap="md">
-            {sections.map(({ component: Section, key }, index) => (
-                <Fragment key={key}>
-                    <Section />
-                    {index < sections.length - 1 && <Divider />}
+            <AnalyticsSettings />
+            {!isLocked && (
+                <Fragment>
+                    <Divider />
+                    <ExportImportSettings />
                 </Fragment>
-            ))}
+            )}
+            <Divider />
+            <LoggerSettings />
+            <Divider />
+            <CacheSettings />
         </Stack>
     );
 });

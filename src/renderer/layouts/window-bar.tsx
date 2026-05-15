@@ -170,16 +170,20 @@ export const WindowBar = () => {
                 }
             }
 
-            return `${radioStatusString}${radioTitle}${radioMetadata} — Feishin${privateMode ? ` ${privateModeString}` : ''}`;
+            // @ts-ignore
+            const brand = window.WEB_TITLE || 'HMusic';
+            return `${radioStatusString}${radioTitle}${radioMetadata} — ${brand}${privateMode ? ` ${privateModeString}` : ''}`;
         }
 
         // Show regular song information
         const statusString = playerStatus === PlayerStatus.PAUSED ? t('page.windowBar.paused') : '';
         const queueString = queueLength ? `(${index + 1} / ${queueLength}) ` : '';
+        // @ts-ignore
+        const brand = window.WEB_TITLE || 'HMusic';
         const title = `${
             queueLength
-                ? `${statusString}${queueString}${currentSong?.name}${currentSong?.artistName ? ` — ${currentSong?.artistName} — Feishin` : ''}`
-                : 'Feishin'
+                ? `${statusString}${queueString}${currentSong?.name}${currentSong?.artistName ? ` — ${currentSong?.artistName} — ${brand}` : ''}`
+                : brand
         }${privateMode ? ` ${privateModeString}` : ''}`;
         return title;
     }, [

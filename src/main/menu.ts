@@ -52,7 +52,7 @@ export default class MenuBuilder {
             label: 'Electron',
             submenu: [
                 {
-                    label: 'About Feishin',
+                    label: 'About HMusic',
                     selector: 'orderFrontStandardAboutPanel:',
                 },
                 { type: 'separator' },
@@ -83,7 +83,7 @@ export default class MenuBuilder {
                 { type: 'separator' },
                 {
                     accelerator: 'Command+H',
-                    label: 'Hide Feishin',
+                    label: 'Hide HMusic',
                     selector: 'hide:',
                 },
                 {

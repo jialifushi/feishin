@@ -12,6 +12,7 @@ export interface AuthSlice extends AuthState {
         addServer: (args: ServerListItemWithCredential) => void;
         deleteServer: (id: string) => void;
         getServer: (id: string) => null | ServerListItemWithCredential;
+        setAuthenticated: (isAuthenticated: boolean) => void;
         setCurrentServer: (server: null | ServerListItemWithCredential) => void;
         setMusicFolderId: (musicFolderId: string[] | undefined) => void;
         updateServer: (id: string, args: Partial<ServerListItemWithCredential>) => void;
@@ -21,6 +22,7 @@ export interface AuthSlice extends AuthState {
 export interface AuthState {
     currentServer: null | ServerListItemWithCredential;
     deviceId: string;
+    isAuthenticated: boolean;
     serverList: Record<string, ServerListItemWithCredential>;
 }
 
@@ -47,6 +49,11 @@ export const useAuthStore = createWithEqualityFn<AuthSlice>()(
                         const server = get().serverList[id];
                         if (server) return server;
                         return null;
+                    },
+                    setAuthenticated: (isAuthenticated) => {
+                        set((state) => {
+                            state.isAuthenticated = isAuthenticated;
+                        });
                     },
                     setCurrentServer: (server) => {
                         set((state) => {
@@ -88,6 +95,7 @@ export const useAuthStore = createWithEqualityFn<AuthSlice>()(
                 },
                 currentServer: null,
                 deviceId: nanoid(),
+                isAuthenticated: false,
                 serverList: {},
             })),
             { name: 'store_authentication' },

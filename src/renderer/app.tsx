@@ -62,14 +62,6 @@ const AppShell = memo(function AppShell() {
         [],
     );
 
-    useEffect(() => {
-        // @ts-ignore
-        if (window.WEB_TITLE) {
-            // @ts-ignore
-            document.title = window.WEB_TITLE;
-        }
-    }, []);
-
     return (
         <>
             <AppEffects />
@@ -86,16 +78,36 @@ const AppShell = memo(function AppShell() {
                 </PlayerProvider>
             </WebAudioContext.Provider>
             <ReleaseNotesModal />
-            <Suspense fallback={null}>
-                <UpdateAvailableDialog />
-            </Suspense>
         </>
     );
 });
+const TitleEffect = () => {
+    useEffect(() => {
+        const updateTitle = () => {
+            // @ts-ignore
+            const brand = window.WEB_TITLE || 'HMusic';
+            if (document.title.includes('Feishin')) {
+                document.title = document.title.replace('Feishin', brand);
+            }
+            if (!document.title || document.title === 'React App') {
+                document.title = brand;
+            }
+        };
+
+        const interval = setInterval(updateTitle, 1000);
+        updateTitle();
+
+        return () => clearInterval(interval);
+    }, []);
+
+    return null;
+};
 
 const AppEffects = () => (
     <>
+        <TitleEffect />
         <SyncSettingsEffect />
+...
         <UpdateCheckEffect />
         <CssSettingsEffect />
         <GlobalShortcutsEffect />
