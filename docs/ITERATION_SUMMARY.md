@@ -129,8 +129,15 @@ services:
    4 rsync -av --exclude='node_modules' --exclude='out' ./ user@remote:/path/
 
   3. 运行 (Run)
+  4. 
   参考 docs/ITERATION_SUMMARY.md 最后的 Docker Compose 示例，通过 MULTI_SERVER=true 即可启用全自动的 Failover 登录体验。
 
+   1. 创建并推送新分支：所有 HMusic v0.1.2 和 v0.2.0 的修改（包括品牌图标、多服务器 Failover 逻辑及终端 UI）已提交并推送到新分支 hertz。
+   2. 清理当前分支：已切换回 development 分支，并执行了 reset 和 clean 操作。现在 development 分支是一个干净的工作区，且与你的 fork (origin/development)
+      状态完全一致。
 
+  Git 状态摘要：
+   * 新分支：hertz（包含所有定制化代码，已推送到 GitHub）。
+   * 当前分支：development（已同步至 origin/development，无本地修改）
 ---
 *文档更新日期：2026-05-15*
