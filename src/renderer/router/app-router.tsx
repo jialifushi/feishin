@@ -15,6 +15,20 @@ const NowPlayingRoute = lazy(
     () => import('/@/renderer/features/now-playing/routes/now-playing-route'),
 );
 
+// New Auth Components Imports
+const AuthCodePage = lazy(
+    () => import('/@/renderer/features/auth/components/auth-code-page'),
+);
+
+const MaintenancePage = lazy(
+    () => import('/@/renderer/features/auth/components/maintenance-page'),
+);
+
+const AutoLoginDispatcher = lazy(
+    () => import('/@/renderer/features/auth/components/auto-login-dispatcher'),
+);
+// End New Auth Components Imports
+
 const AlbumListRoute = lazy(() => import('/@/renderer/features/albums/routes/album-list-route'));
 
 const SongListRoute = lazy(() => import('/@/renderer/features/songs/routes/song-list-route'));
@@ -193,11 +207,13 @@ export const AppRouter = () => {
             <ModalsProvider modals={appRouterModals}>
                 <RouterErrorBoundary>
                     <Routes>
+                        {/* Top-level dispatcher, runs before any other layout/outlet */}
+                        <Route element={<AutoLoginDispatcher />} index />
+
                         <Route element={<AuthenticationOutlet />}>
                             <Route element={<TitlebarOutlet />}>
                                 <Route element={<AppOutlet />}>
                                     <Route element={<ResponsiveLayout />}>
-                                        <Route element={<HomeRoute />} index />
                                         <Route element={<HomeRoute />} path={AppRoute.HOME} />
                                         <Route element={<SearchRoute />} path={AppRoute.SEARCH} />
                                         <Route
@@ -312,6 +328,8 @@ export const AppRouter = () => {
                                 </Route>
                             </Route>
                         </Route>
+
+                        {/* Unauthenticated/Shell routes */}
                         <Route element={<TitlebarOutlet />}>
                             <Route element={<ResponsiveLayout shell />}>
                                 <Route
@@ -319,11 +337,14 @@ export const AppRouter = () => {
                                     path={AppRoute.ACTION_REQUIRED}
                                 />
                                 <Route element={<LoginRoute />} path={AppRoute.LOGIN} />
+                                <Route element={<AuthCodePage />} path="/auth-code" />
+                                <Route element={<MaintenancePage />} path="/maintenance" />
                             </Route>
                             <Route element={<ResponsiveLayout />}>
                                 <Route element={<NoNetworkRoute />} path={AppRoute.NO_NETWORK} />
                             </Route>
                         </Route>
+                        <Route element={<InvalidRoute />} path="*" />
                     </Routes>
                 </RouterErrorBoundary>
             </ModalsProvider>

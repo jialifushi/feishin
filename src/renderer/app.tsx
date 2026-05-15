@@ -62,6 +62,14 @@ const AppShell = memo(function AppShell() {
         [],
     );
 
+    useEffect(() => {
+        // @ts-ignore
+        if (window.WEB_TITLE) {
+            // @ts-ignore
+            document.title = window.WEB_TITLE;
+        }
+    }, []);
+
     return (
         <>
             <AppEffects />
