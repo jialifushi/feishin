@@ -14,15 +14,15 @@ services:
             - SERVER_TYPE1=navidrome # navidrome also works
             - SERVER_URL1=http://192.168.19.29:4533/ # http://address:port
             - WEB_TITLE1=HMusic
-            - USERNAME1=Hertz # pre defined username
-            - PASSWORD1=5201314hez # pre defined password
+            - USERNAME1= # pre defined username
+            - PASSWORD1= # pre defined password
             # 服务器2
             - WEB_TITLE2=HMusic-Backup
             - SERVER_TYPE2=navidrome
-            - SERVER_URL2=http://121.4.81.141:1260/
+            - SERVER_URL2=http://
             - WEB_TITLE2=HMusic
-            - USERNAME2=Hertz
-            - PASSWORD2=5201314hez
+            - USERNAME2=
+            - PASSWORD2=
             - ALLOW_CODE=123 # used for some authentications
             - LEGACY_AUTHENTICATION=false # When SERVER_LOCK is true, sets the legacyauth flag for server authentication (true or false)
             - ANALYTICS_DISABLED=false # Set to true to disable Umami analytics tracking
