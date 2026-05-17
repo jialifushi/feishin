@@ -16,7 +16,8 @@ RUN pnpm install --frozen-lockfile --ignore-scripts
 # Copy code
 COPY . .
 
-# Perform web build
+# Perform web build with increased memory limit
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN pnpm run build:web
 
 # --- Production stage
