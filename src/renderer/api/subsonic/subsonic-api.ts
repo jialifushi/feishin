@@ -465,7 +465,7 @@ export const ssApiClient = (args: {
                 signal,
                 // In cases where we have a fallback, don't notify the error
                 transformResponse: silent ? silentlyTransformResponse : undefined,
-                url: `${baseUrl}/${api}`,
+                url: baseUrl?.endsWith('/') ? `${baseUrl}${api}` : `${baseUrl}/${api}`,
             };
 
             const isGetTranscodeDecisionPost =

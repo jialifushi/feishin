@@ -496,6 +496,11 @@ export const ndApiClient = (args: {
             try {
                 if (shouldDelay) await waitForResult();
 
+                // Build URL and prevent double slashes
+                const fullUrl = baseUrl?.endsWith('/') 
+                    ? `${baseUrl}${api}` 
+                    : `${baseUrl}/${api}`;
+
                 const result = await axiosClient.request({
                     data: body,
                     headers: {
@@ -505,7 +510,7 @@ export const ndApiClient = (args: {
                     method: method as Method,
                     params,
                     signal,
-                    url: `${baseUrl}/${api}`,
+                    url: fullUrl,
                 });
                 return {
                     body: { data: result.data, headers: result.headers },

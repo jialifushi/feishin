@@ -14,10 +14,34 @@ const AuthCodePage = () => {
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
+            let matchedSuffix = null;
+            
+            // Check for legacy single ALLOW_CODE first
             // @ts-ignore
-            const allowCode = window.ALLOW_CODE;
-            if (code === allowCode) {
+            if (window.ALLOW_CODE && code === window.ALLOW_CODE) {
+                matchedSuffix = 'default';
+                console.log('[AUTH] Matched legacy ALLOW_CODE');
+            } else {
+                // Iterate through all window keys to find matching ALLOW_CODE_x
+                // We use find to stop at the first match to prevent overwriting
+                const matchedKey = Object.keys(window).find(key => {
+                    if (key.startsWith('ALLOW_CODE_')) {
+                        // @ts-ignore
+                        return window[key] === code;
+                    }
+                    return false;
+                });
+
+                if (matchedKey) {
+                    matchedSuffix = matchedKey.replace('ALLOW_CODE_', '');
+                    console.log(`[AUTH] Matched user suffix: ${matchedSuffix} (from ${matchedKey})`);
+                }
+            }
+
+            if (matchedSuffix) {
+                console.log(`[AUTH] Verification successful. Suffix: ${matchedSuffix}`);
                 sessionStorage.setItem('pin_verified', 'true');
+                sessionStorage.setItem('user_suffix', matchedSuffix);
                 navigate('/'); 
             } else {
                 setError(true);

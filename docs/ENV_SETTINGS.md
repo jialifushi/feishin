@@ -12,6 +12,9 @@ These variables override app settings **on first run** when no persisted setting
 |-------------|---------|--------------|--------------------------------|
 | `multi_server` | `false` | `MULTI_SERVER` | Set to `true` to enable sequential server login attempts. |
 | `allow_code` | *(empty)* | `ALLOW_CODE` | Access PIN code. Required for entering the loading terminal. |
+| `allow_code_x` | *(empty)* | `ALLOW_CODE_a`, `ALLOW_CODE_b`, etc. | Per-user access PIN code. Maps to specific credentials. |
+| `allow_code_x_usernameN` | *(empty)* | `ALLOW_CODE_a_USERNAME1`, etc. | Per-user username for server N. |
+| `allow_code_x_passwordN` | *(empty)* | `ALLOW_CODE_a_PASSWORD1`, etc. | Per-user password for server N. |
 
 ### Server Nodes (1-5)
 Each node requires a full set of credentials. Replace `[n]` with 1-5:
@@ -20,6 +23,21 @@ Each node requires a full set of credentials. Replace `[n]` with 1-5:
 *   `USERNAME[n]`: Login username.
 *   `PASSWORD[n]`: Login password.
 *   `WEB_TITLE[n]`: Brand title for this specific node.
+
+---
+
+## Notifications (v0.2.1+)
+
+Configure these to automatically send login status (Success/Failure) to a webhook or Telegram. Leave blank to disable.
+
+| Setting | Default | Env variable | Description |
+|-------------|---------|--------------|--------------------------------|
+| `webhookUrl` | *(empty)* | `WEBHOOK_URL` | The complete Webhook URL (e.g., Feishu, Discord). |
+| `webhookMethod` | `POST` | `WEBHOOK_METHOD` | HTTP method for the webhook (`POST`, `GET`). |
+| `webhookHeaders`| `{"Content-Type":"application/json"}` | `WEBHOOK_HEADERS` | JSON string of HTTP headers. |
+| `webhookTemplate`| `{"content":"{{message}}"}` | `WEBHOOK_TEMPLATE` | JSON string defining the payload. `{{message}}` is replaced by the actual text. |
+| `botToken` | *(empty)* | `BOT_TOKEN` | Telegram Bot Token. |
+| `chatId` | *(empty)* | `CHAT_ID` | Telegram Chat ID. |
 
 ---
 

@@ -2,27 +2,49 @@ version: '3.5'
 services:
     feishin:
         container_name: feishin-auth-test
-        image: feishin-auth:v0.2.0
+        image: feishin-auth:v10-test
         restart: unless-stopped
         ports:
             - 9180:9180
         environment:
             - MULTI_SERVER=true
             - SERVER_LOCK=true # When true AND name/type/url are set, only username/password can be toggled
+            
+            - ALLOW_CODE=123 # Global access code
+            - ALLOW_CODE_a=1234 # Code for user A
+            - ALLOW_CODE_b=12345 # Code for user B
+            - ALLOW_CODE_c=123456 # Code for user C
+
             # 服务器1
-            - WEB_TITLE1=HMusic-Main # pre defined server name
-            - SERVER_TYPE1=navidrome # navidrome also works
             - SERVER_URL1=http://192.168.19.29:4533/ # http://address:port
-            - WEB_TITLE1=HMusic
-            - USERNAME1= # pre defined username
-            - PASSWORD1= # pre defined password
+            - SERVER_TYPE1=navidrome
+            - WEB_TITLE1=HMusic-Main
+            - USERNAME1=Hertz # Default username
+            - PASSWORD1=520131 # Default password
+            - ALLOW_CODE_a_USERNAME1=He1
+            - ALLOW_CODE_a_PASSWORD1=520z
+            - ALLOW_CODE_b_USERNAME1=test
+            - ALLOW_CODE_b_PASSWORD1=123456
+            - ALLOW_CODE_c_USERNAME1=test1
+            - ALLOW_CODE_c_PASSWORD1=123456
+
             # 服务器2
-            - WEB_TITLE2=HMusic-Backup
+            - SERVER_URL2=http://121.4.81.141:1260/
             - SERVER_TYPE2=navidrome
-            - SERVER_URL2=http://
-            - WEB_TITLE2=HMusic
-            - USERNAME2=
-            - PASSWORD2=
-            - ALLOW_CODE=123 # used for some authentications
-            - LEGACY_AUTHENTICATION=false # When SERVER_LOCK is true, sets the legacyauth flag for server authentication (true or false)
-            - ANALYTICS_DISABLED=false # Set to true to disable Umami analytics tracking
+            - WEB_TITLE2=HMusic-Backup
+            - USERNAME2=ddqw
+            - PASSWORD2=520131
+            - ALLOW_CODE_a_USERNAME2=Hertz
+            - ALLOW_CODE_a_PASSWORD2=5201314hez
+            - ALLOW_CODE_b_USERNAME2=test
+            - ALLOW_CODE_b_PASSWORD2=123456
+            - ALLOW_CODE_c_USERNAME2=test1
+            - ALLOW_CODE_c_PASSWORD2=123456
+
+            - LEGACY_AUTHENTICATION=false
+            - ANALYTICS_DISABLED=false
+            
+            # 通知配置 (留空则不启用)
+            - WEBHOOK_URL=
+            - BOT_TOKEN=
+            - CHAT_ID=

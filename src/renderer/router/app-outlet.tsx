@@ -24,7 +24,9 @@ export const AppOutlet = () => {
     const { deleteServer, setCurrentServer } = useAuthStoreActions();
 
     const hasServerLockMismatch = useMemo(() => {
-        if (!isServerLock() || !currentServer || !window.SERVER_URL) {
+        // Skip lock check if multi-server is enabled or not locked
+        // @ts-ignore
+        if (window.MULTI_SERVER === 'true' || !isServerLock() || !currentServer || !window.SERVER_URL) {
             return false;
         }
 

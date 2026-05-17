@@ -14,42 +14,79 @@ export interface MultiServerConfig {
 }
 
 export const getMultiServerConfigs = (): MultiServerConfig[] => {
-    const configs: MultiServerConfig[] = [];
+    const rawConfigs: Array<{ url: string; type: string; webTitle: string; username: string; password: string; nodeIndex: number }> = [];
+    const userSuffix = sessionStorage.getItem('user_suffix');
+    const suffix = userSuffix && userSuffix !== 'default' ? `ALLOW_CODE_${userSuffix}_` : '';
     
-    // Check main config first if multi-server is disabled or as a fallback
-    if (window.SERVER_URL && window.USERNAME && window.PASSWORD) {
-        configs.push({
-            password: window.PASSWORD,
-            type: window.SERVER_TYPE || 'jellyfin',
-            url: window.SERVER_URL,
-            username: window.USERNAME,
-            webTitle: window.WEB_TITLE || 'HMusic',
-        });
-    }
+    const isReal = (val: any) => {
+        if (!val || typeof val !== 'string') return false;
+        if (val.includes('${') || val.includes('}')) return false;
+        if (val === 'http://127.0.0.1') return false;
+        if (val === 'undefined' || val === 'null' || val.trim() === '') return false;
+        return true;
+    };
 
-    // Check numbered configs
-    for (let i = 1; i <= 5; i++) {
+    // 1. Collect all real configs
+    if (isReal(window.SERVER_URL)) {
         // @ts-ignore
-        const url = window[`SERVER_URL${i}`];
+        const username = isReal(window[`${suffix}USERNAME`]) ? window[`${suffix}USERNAME`] : window.USERNAME;
         // @ts-ignore
-        const username = window[`USERNAME${i}`];
-        // @ts-ignore
-        const password = window[`PASSWORD${i}`];
-        // @ts-ignore
-        const type = window[`SERVER_TYPE${i}`];
-        // @ts-ignore
-        const webTitle = window[`WEB_TITLE${i}`];
-
-        if (url && username && password) {
-            configs.push({
+        const password = isReal(window[`${suffix}PASSWORD`]) ? window[`${suffix}PASSWORD`] : window.PASSWORD;
+        if (isReal(username) && isReal(password)) {
+            rawConfigs.push({ 
+                url: window.SERVER_URL, 
+                type: window.SERVER_TYPE || 'jellyfin', 
+                webTitle: window.WEB_TITLE || 'HMusic', 
+                username, 
                 password,
-                type: type || 'jellyfin',
-                url,
-                username,
-                webTitle: webTitle || 'HMusic',
+                nodeIndex: 1 
             });
         }
     }
 
-    return configs;
+    for (let i = 1; i <= 5; i++) {
+        // @ts-ignore
+        const url = window[`SERVER_URL${i}`];
+        if (isReal(url)) {
+            // @ts-ignore
+            const username = isReal(window[`${suffix}USERNAME${i}`]) ? window[`${suffix}USERNAME${i}`] : window[`USERNAME${i}`];
+            // @ts-ignore
+            const password = isReal(window[`${suffix}PASSWORD${i}`]) ? window[`${suffix}PASSWORD${i}`] : window[`PASSWORD${i}`];
+            // @ts-ignore
+            const type = window[`SERVER_TYPE${i}`];
+            // @ts-ignore
+            const webTitle = window[`WEB_TITLE${i}`];
+
+            if (isReal(username) && isReal(password)) {
+                rawConfigs.push({ 
+                    url, 
+                    type: type || 'jellyfin', 
+                    webTitle: webTitle || 'HMusic', 
+                    username, 
+                    password,
+                    nodeIndex: i 
+                });
+            }
+        }
+    }
+
+    // 2. Deduplicate by URL and Map to Proxy Paths
+    const seenUrls = new Set<string>();
+    const finalConfigs: MultiServerConfig[] = [];
+
+    for (const raw of rawConfigs) {
+        const normalizedUrl = raw.url.replace(/\/$/, '');
+        if (seenUrls.has(normalizedUrl)) continue;
+        
+        seenUrls.add(normalizedUrl);
+        finalConfigs.push({
+            password: raw.password,
+            type: raw.type,
+            url: `/api/server${raw.nodeIndex}`, // Use clean proxy path
+            username: raw.username,
+            webTitle: raw.webTitle
+        });
+    }
+
+    return finalConfigs;
 };

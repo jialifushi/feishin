@@ -27,4 +27,72 @@ server {
     alias /etc/nginx/conf.d/settings.js;
     add_header Cache-Control "no-store";
   }
+
+  # --- Notification Proxies ---
+  location /api/notify/webhook {
+    proxy_pass ${WEBHOOK_URL};
+    proxy_ssl_server_name on;
+    proxy_set_header Host $proxy_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_connect_timeout 10s;
+  }
+
+  location /api/notify/telegram/ {
+    proxy_pass https://api.telegram.org/;
+    proxy_ssl_server_name on;
+    proxy_set_header Host api.telegram.org;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_connect_timeout 10s;
+  }
+
+  # --- Server Proxies to solve CORS ---
+  location /api/server1/ {
+    rewrite ^/api/server1/(.*)$ /$1 break;
+    proxy_pass ${SERVER_URL1};
+    proxy_ssl_server_name on;
+    proxy_set_header Host $proxy_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_connect_timeout 10s;
+  }
+
+  location /api/server2/ {
+    rewrite ^/api/server2/(.*)$ /$1 break;
+    proxy_pass ${SERVER_URL2};
+    proxy_ssl_server_name on;
+    proxy_set_header Host $proxy_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_connect_timeout 10s;
+  }
+
+  location /api/server3/ {
+    rewrite ^/api/server3/(.*)$ /$1 break;
+    proxy_pass ${SERVER_URL3};
+    proxy_ssl_server_name on;
+    proxy_set_header Host $proxy_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_connect_timeout 10s;
+  }
+
+  location /api/server4/ {
+    rewrite ^/api/server4/(.*)$ /$1 break;
+    proxy_pass ${SERVER_URL4};
+    proxy_ssl_server_name on;
+    proxy_set_header Host $proxy_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_connect_timeout 10s;
+  }
+
+  location /api/server5/ {
+    rewrite ^/api/server5/(.*)$ /$1 break;
+    proxy_pass ${SERVER_URL5};
+    proxy_ssl_server_name on;
+    proxy_set_header Host $proxy_host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_connect_timeout 10s;
+  }
 }

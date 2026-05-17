@@ -440,7 +440,7 @@ export const jfApiClient = (args: {
                     method: method as Method,
                     params,
                     signal,
-                    url: `${baseUrl}/${api}`,
+                    url: baseUrl?.endsWith('/') ? `${baseUrl}${api}` : `${baseUrl}/${api}`,
                 });
                 return {
                     body: result.data,

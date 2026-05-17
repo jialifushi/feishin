@@ -16,6 +16,9 @@
 | `USERNAME` | 预设的登录用户名。 |
 | `PASSWORD` | 预设的登录密码。 |
 | `ALLOW_CODE`| 二次鉴权码。在自动登录成功后，用于进行第二步验证。 |
+| `ALLOW_CODE_x`| 多用户二次鉴权码（如 `ALLOW_CODE_a`, `ALLOW_CODE_b`）。匹配后将使用对应的 `ALLOW_CODE_x_USERNAMEn` 凭据。 |
+| `ALLOW_CODE_x_USERNAMEn`| 特定用户 `x` 在服务器 `n` 上的用户名。 |
+| `ALLOW_CODE_x_PASSWORDn`| 特定用户 `x` 在服务器 `n` 上的密码。 |
 
 #### 1.2. 核心逻辑流程
 
